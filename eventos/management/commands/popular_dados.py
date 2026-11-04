@@ -1,6 +1,6 @@
 from datetime import time, timedelta
 
-from django.contrib.auth.models import User
+from django.contrib.auth.models import Group, Permission, User
 from django.core.management.base import BaseCommand
 from django.utils import timezone
 
@@ -124,6 +124,28 @@ class Command(BaseCommand):
             defaults={'status': Inscricao.Status.CANCELADA},
         )
 
+         # Perfil intermediário: gestor de eventos (grupo com permissões limitadas)
+        grupo, _ = Group.objects.get_or_create(name='Gestores de Eventos')
+        codenames = [
+            f'{acao}_{modelo}'
+            for modelo in ('categoria', 'evento', 'local')
+            for acao in ('add', 'change', 'delete', 'view')
+        ] + ['view_inscricao']
+        permissoes = Permission.objects.filter(
+            content_type__app_label='eventos', codename__in=codenames
+        )
+        grupo.permissions.set(permissoes)
+
+        gestor, criado = User.objects.get_or_create(
+            username='gestor',
+            defaults={'email': 'gestor@exemplo.com', 'first_name': 'Gestor', 'is_staff': True},
+        )
+        if criado:
+            gestor.set_password('senha12345')
+            gestor.save()
+        gestor.groups.add(grupo)
+
         self.stdout.write(self.style.SUCCESS('Dados de exemplo criados com sucesso!'))
         self.stdout.write('Administrador: admin / admin123')
         self.stdout.write('Usuários comuns: maria, joao e ana / senha12345')
+        self.stdout.write('Gestor de eventos: gestor / senha12345')

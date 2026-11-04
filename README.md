@@ -2,7 +2,7 @@
 
 <img src="https://capsule-render.vercel.app/api?type=waving&color=8E5BA5&height=120&section=header" width="100%" alt="">
 
-<img src="docs/img/logo.svg" alt="Lumipass, por Lume" width="460">
+<img src="docs/img/logo1.png" alt="Lumipass, por Lume" width="400">
 
 ### ✨ Plataforma de Gestão de Eventos ✨
 *Descubra, inscreva-se e organize eventos em um só lugar.*

@@ -9,12 +9,12 @@
 
 ![Python](https://img.shields.io/badge/Python-3.12+-8E5BA5?style=for-the-badge&logo=python&logoColor=white)
 ![Django](https://img.shields.io/badge/Django-6.1-C3A3D6?style=for-the-badge&logo=django&logoColor=white)
-![Bootstrap](https://img.shields.io/badge/Bootstrap-5.3-FFC266?style=for-the-badge&logo=bootstrap&logoColor=white)
-![Status](https://img.shields.io/badge/status-em%20desenvolvimento-8E5BA5?style=for-the-badge)
+![Jazzmin](https://img.shields.io/badge/Admin-Jazzmin-FFC266?style=for-the-badge)
+![Status](https://img.shields.io/badge/status-Checkpoint%201-8E5BA5?style=for-the-badge)
 
 **Lumipass** é um produto da **Lume** · Projeto da disciplina **GAC116 – Programação Web** · UFLA
 
-[Contexto](#-contexto) · [Problema](#-o-problema) · [Solução](#-a-solução) · [História de uso](#-história-de-uso) · [Instalação](#-instalação) · [Equipe](#-equipe)
+[Contexto](#-contexto) · [Problema](#-o-problema) · [Solução](#-a-solução) · [História de uso](#-história-de-uso) · [Status](#-status-do-projeto) · [Instalação](#-instalação) · [Equipe](#-equipe)
 
 </div>
 
@@ -66,16 +66,8 @@ O **Lumipass** é uma aplicação web feita com **Django** onde:
 - **Participantes** criam uma conta, exploram eventos, pesquisam, filtram por categoria, se inscrevem,
   cancelam e acompanham suas inscrições.
 - **Administradores** cadastram eventos, categorias e locais, acompanham inscrições e gerenciam
-  usuários em um ambiente administrativo personalizado (tema **Jazzmin**), com filtros, buscas e um
-  painel com gráficos.
-
-### Regras de negócio
-
-> [!IMPORTANT]
-> - O limite de vagas de um evento **não pode ultrapassar a capacidade do local**.
-> - Cada usuário só pode ter **uma inscrição por evento**.
-> - Não é possível se inscrever em eventos **encerrados** ou **esgotados**.
-> - Cada usuário só acessa **as próprias inscrições**.
+  usuários em um ambiente administrativo personalizado (tema **Jazzmin**), com filtros, buscas e
+  navegação por data.
 
 <img src="https://capsule-render.vercel.app/api?type=rect&color=C3A3D6&height=3" width="100%" alt="">
 
@@ -93,22 +85,52 @@ O **Lumipass** é uma aplicação web feita com **Django** onde:
    liberando a vaga para outra pessoa.
 
 > [!TIP]
-> **Maria**, organizadora, acessa o ambiente administrativo, cadastra o evento com local e vagas,
-> acompanha as inscrições em tempo real e consulta o painel de gráficos para ver a procura por categoria.
+> **Maria**, organizadora, acessa o ambiente administrativo, cadastra o evento com local e vagas e
+> acompanha as inscrições em tempo real.
 
 <img src="https://capsule-render.vercel.app/api?type=rect&color=C3A3D6&height=3" width="100%" alt="">
 
-## ✨ Funcionalidades
+## 🚦 Status do projeto
 
-| 🟣 Participante | 🟡 Administração |
+**Checkpoint 1 (entregue):** estrutura do projeto, modelagem do banco de dados, ambiente administrativo
+com tema Jazzmin, comando de dados de exemplo e perfis de acesso.
+
+**Próximas etapas:** área do participante (cadastro, login, lista e detalhes de eventos, inscrição e
+cancelamento), interface responsiva com tema claro e escuro e testes.
+
+### Funcionalidades
+
+| ✅ Já implementado | 🔜 Planejado |
 |---|---|
-| Cadastro, login e logout | CRUD de eventos, categorias e locais |
-| Ver eventos e detalhes | Ver e gerenciar inscrições (ação em lote) |
-| Pesquisar e filtrar por categoria | Gerenciar usuários, grupos e permissões |
-| Paginação da lista de eventos | Filtros, buscas e navegação por data |
-| Inscrever-se e cancelar | Painel com gráficos |
-| Ver minhas inscrições | Tema Jazzmin personalizado |
-| Tema claro e escuro | Upload de imagem de capa do evento |
+| CRUD de eventos, categorias e locais no admin | Cadastro, login e logout de participantes |
+| Gerenciamento de inscrições (cancelamento em lote) | Lista de eventos com busca, filtro e paginação |
+| Inscrições dentro da página do evento | Página de detalhes do evento |
+| Filtros por período, categoria, local e data | Inscrição e cancelamento pelo participante |
+| Busca e navegação por data | Página "Minhas inscrições" |
+| Tema Jazzmin personalizado | Interface responsiva com tema claro e escuro |
+| Perfis de acesso (administrador, gestor e usuário) | Testes automatizados |
+| Upload de imagem de capa do evento | |
+| Dados de exemplo com um comando | |
+
+### Regras de negócio
+
+> [!IMPORTANT]
+> **Já aplicadas no sistema:**
+> - O limite de vagas de um evento **não pode ultrapassar a capacidade do local**.
+> - Cada usuário só pode ter **uma inscrição por evento**.
+> - Locais e categorias com eventos **não podem ser excluídos**.
+>
+> **Planejadas para a área do participante:**
+> - Não é possível se inscrever em eventos **encerrados** ou **esgotados**.
+> - Cada usuário só acessa **as próprias inscrições**.
+
+### Perfis de acesso
+
+| Perfil | Acesso |
+|---|---|
+| **Administrador** | Tudo: eventos, categorias, locais, inscrições, usuários e grupos |
+| **Gestor de eventos** | Cria e edita eventos, categorias e locais, e apenas visualiza inscrições |
+| **Usuário comum** | Não acessa o admin; usará a área do participante |
 
 <img src="https://capsule-render.vercel.app/api?type=rect&color=C3A3D6&height=3" width="100%" alt="">
 
@@ -166,11 +188,10 @@ erDiagram
 ## 🧰 Tecnologias
 
 * **Python 3.12+** e **Django 6.1**
-* **SQLite** (desenvolvimento) e **PostgreSQL** (Docker)
-* **Bootstrap 5.3** e **Bootstrap Icons** (interface responsiva, tema claro e escuro)
+* **SQLite** (banco de dados de desenvolvimento)
 * **django-jazzmin** (tema do ambiente administrativo)
-* **WhiteNoise** (arquivos estáticos), **Pillow** (imagens) e **Chart.js** (gráficos)
-* **Git**, **GitHub** e **Docker**
+* **Pillow** (upload de imagens) e **WhiteNoise** (arquivos estáticos)
+* **Git** e **GitHub** (versionamento com branches e Pull Requests)
 
 <img src="https://capsule-render.vercel.app/api?type=rect&color=C3A3D6&height=3" width="100%" alt="">
 
@@ -204,28 +225,15 @@ python manage.py popular_dados
 python manage.py runserver
 ```
 
-Acesse [http://127.0.0.1:8000/](http://127.0.0.1:8000/). O ambiente administrativo está em
-[http://127.0.0.1:8000/admin/](http://127.0.0.1:8000/admin/).
+O ambiente administrativo fica em [http://127.0.0.1:8000/admin/](http://127.0.0.1:8000/admin/).
 
 **Usuários de exemplo (apenas desenvolvimento):**
 
-* Administrador: `admin` / `admin123`
-* Usuários comuns: `maria`, `joao` e `ana` / `senha12345`
-
-## 🧪 Testes
-
-```bash
-python manage.py test
-```
-
-## 🐳 Executando com Docker
-
-```bash
-docker compose up --build -d
-docker compose exec web python manage.py popular_dados
-```
-
-Acesse [http://localhost:8000/](http://localhost:8000/). Para parar: `docker compose down`.
+| Usuário | Senha | Perfil |
+|---|---|---|
+| `admin` | `admin123` | Administrador |
+| `gestor` | `senha12345` | Gestor de eventos |
+| `maria`, `joao`, `ana` | `senha12345` | Usuários comuns (sem acesso ao admin) |
 
 <img src="https://capsule-render.vercel.app/api?type=rect&color=C3A3D6&height=3" width="100%" alt="">
 
@@ -233,14 +241,15 @@ Acesse [http://localhost:8000/](http://localhost:8000/). Para parar: `docker com
 
 ```text
 plataforma-gestao-eventos/
-├── gestao_eventos/   # configurações do projeto (settings, urls)
-├── usuarios/         # app: cadastro, login e logout
-├── eventos/          # app: categorias, locais, eventos, inscrições, admin e painel
-├── templates/        # templates compartilhados (base, navbar, erros)
-├── static/           # CSS e JavaScript
-├── docs/img/         # logo e imagens do README
-├── Dockerfile
-├── docker-compose.yml
+├── gestao_eventos/        # configurações do projeto (settings, urls)
+├── usuarios/              # app de usuários (autenticação nas próximas etapas)
+├── eventos/               # app: categorias, locais, eventos e inscrições
+│   ├── models.py          # modelos e regras de negócio
+│   ├── admin.py           # configuração do ambiente administrativo
+│   └── management/
+│       └── commands/
+│           └── popular_dados.py   # comando de dados de exemplo
+├── docs/img/              # logo e imagens do README
 ├── requirements.txt
 └── manage.py
 ```
@@ -258,13 +267,6 @@ integradas por Pull Requests.
 
 <table>
   <tr>
-    <td align="center" width="220">
-      <a href="https://github.com/carolinaude">
-        <img src="https://github.com/carolinaude.png?size=140" width="140" alt="Carolina Costa Ude">
-      </a><br>
-      <b>Carolina Costa Ude</b><br>
-      <a href="https://github.com/carolinaude">@carolinaude</a>
-    </td>
     <td align="center" width="220">
       <a href="https://github.com/LeticiaGNM">
         <img src="https://github.com/LeticiaGNM.png?size=140" width="140" alt="Leticia Gabriella Nascimento de Morais">

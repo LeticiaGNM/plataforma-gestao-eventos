@@ -27,6 +27,7 @@ ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1').sp
 # Aplicações e middlewares
 # ----------------------------------------------------------------------
 INSTALLED_APPS = [
+    'jazzmin', 
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -124,3 +125,36 @@ MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# ----------------------------------------------------------------------
+# Tema do ambiente administrativo (Jazzmin)
+# ----------------------------------------------------------------------
+JAZZMIN_SETTINGS = {
+    'site_title': 'Lumipass',
+    'site_header': 'Lumipass',
+    'site_brand': 'Lumipass',
+    'welcome_sign': 'Bem-vindo(a) ao painel administrativo do Lumipass',
+    'copyright': 'Lumipass · Lume',
+    'search_model': ['eventos.Evento', 'auth.User'],
+    'topmenu_links': [
+        {'name': 'Início', 'url': 'admin:index'},
+        {'name': 'Ver site', 'url': '/', 'new_window': True},
+    ],
+    'order_with_respect_to': ['eventos', 'auth'],
+    'icons': {
+        'auth': 'fas fa-users-cog',
+        'auth.user': 'fas fa-user',
+        'auth.group': 'fas fa-users',
+        'eventos.categoria': 'fas fa-tags',
+        'eventos.local': 'fas fa-map-marker-alt',
+        'eventos.evento': 'fas fa-calendar-alt',
+        'eventos.inscricao': 'fas fa-ticket-alt',
+    },
+    'changeform_format': 'horizontal_tabs',
+    'show_theme_chooser': True,
+}
+
+JAZZMIN_UI_TWEAKS = {
+    'theme': 'flatly',
+    'default_theme_mode': 'auto',
+}

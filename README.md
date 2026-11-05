@@ -200,7 +200,7 @@ erDiagram
 Pré-requisitos: Python 3.12 ou superior e Git.
 
 ```bash
-git clone https://github.com/tainarafms/plataforma-gestao-eventos.git
+git clone https://github.com/LeticiaGNM/plataforma-gestao-eventos.git
 cd plataforma-gestao-eventos
 python3 -m venv venv
 ```

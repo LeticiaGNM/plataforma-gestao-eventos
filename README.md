@@ -187,7 +187,7 @@ erDiagram
 
 ## 🧰 Tecnologias
 
-* **Python 3.12+** e **Django 6.1**
+* ** 3.12+** e **Django 6.1**
 * **SQLite** (banco de dados de desenvolvimento)
 * **django-jazzmin** (tema do ambiente administrativo)
 * **Pillow** (upload de imagens) e **WhiteNoise** (arquivos estáticos)
@@ -202,7 +202,7 @@ Pré-requisitos: Python 3.12 ou superior e Git.
 ```bash
 git clone https://github.com/tainarafms/plataforma-gestao-eventos.git
 cd plataforma-gestao-eventos
-python -m venv venv
+python3 -m venv venv
 ```
 
 Ative o ambiente virtual:
@@ -214,15 +214,15 @@ Ative o ambiente virtual:
 Instale as dependências, crie o banco e popule com dados de exemplo:
 
 ```bash
-python -m pip install -r requirements.txt
-python manage.py migrate
-python manage.py popular_dados
+python3 -m pip install -r requirements.txt
+python3 manage.py migrate
+python3 manage.py popular_dados
 ```
 
 ## ▶️ Execução
 
 ```bash
-python manage.py runserver
+python3 manage.py runserver
 ```
 
 O ambiente administrativo fica em [http://127.0.0.1:8000/admin/](http://127.0.0.1:8000/admin/).

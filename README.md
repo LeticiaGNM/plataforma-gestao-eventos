@@ -187,7 +187,7 @@ erDiagram
 
 ## 🧰 Tecnologias
 
-* ** 3.12+** e **Django 6.1**
+* **3.12+** e **Django 6.1**
 * **SQLite** (banco de dados de desenvolvimento)
 * **django-jazzmin** (tema do ambiente administrativo)
 * **Pillow** (upload de imagens) e **WhiteNoise** (arquivos estáticos)

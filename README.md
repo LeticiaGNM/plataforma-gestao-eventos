@@ -10,11 +10,11 @@
 ![Python](https://img.shields.io/badge/Python-3.12+-8E5BA5?style=for-the-badge&logo=python&logoColor=white)
 ![Django](https://img.shields.io/badge/Django-6.1-C3A3D6?style=for-the-badge&logo=django&logoColor=white)
 ![Jazzmin](https://img.shields.io/badge/Admin-Jazzmin-FFC266?style=for-the-badge)
-![Status](https://img.shields.io/badge/status-Checkpoint%201-8E5BA5?style=for-the-badge)
+![Status](https://img.shields.io/badge/status-Checkpoint%202-8E5BA5?style=for-the-badge)
 
 **Lumipass** é um produto da **Lume** · Projeto da disciplina **GAC116 – Programação Web** · UFLA
 
-[Contexto](#-contexto) · [Problema](#-o-problema) · [Solução](#-a-solução) · [História de uso](#-história-de-uso) · [Status](#-status-do-projeto) · [Instalação](#-instalação) · [Equipe](#-equipe)
+[Contexto](#-contexto) · [Problema](#-o-problema) · [Solução](#-a-solução) · [História de uso](#-história-de-uso) · [Funcionalidades](#-funcionalidades) · [Instalação](#-instalação) · [Equipe](#-equipe)
 
 </div>
 
@@ -67,7 +67,7 @@ O **Lumipass** é uma aplicação web feita com **Django** onde:
   cancelam e acompanham suas inscrições.
 - **Administradores** cadastram eventos, categorias e locais, acompanham inscrições e gerenciam
   usuários em um ambiente administrativo personalizado (tema **Jazzmin**), com filtros, buscas e
-  navegação por data.
+  navegação por data, além de um **painel com gráficos** sobre os eventos e as inscrições.
 
 <img src="https://capsule-render.vercel.app/api?type=rect&color=C3A3D6&height=3" width="100%" alt="">
 
@@ -78,7 +78,7 @@ O **Lumipass** é uma aplicação web feita com **Django** onde:
 > encontrar as informações.
 
 1. Ana abre o **Lumipass** e cria sua conta em menos de um minuto.
-2. Na página inicial, filtra os eventos pela categoria **Tecnologia** e busca por "oficina".
+2. Na lista de eventos, filtra pela categoria **Tecnologia** e busca por "oficina".
 3. Abre os detalhes do evento: data, horário, local, descrição e **vagas disponíveis**.
 4. Clica em **Inscrever-se**. A inscrição é confirmada e o número de vagas é atualizado.
 5. Em **Minhas inscrições**, acompanha tudo e, se a agenda apertar, **cancela** com um clique,
@@ -86,51 +86,51 @@ O **Lumipass** é uma aplicação web feita com **Django** onde:
 
 > [!TIP]
 > **Maria**, organizadora, acessa o ambiente administrativo, cadastra o evento com local e vagas e
-> acompanha as inscrições em tempo real.
+> acompanha as inscrições e os números do evento no painel com gráficos.
 
 <img src="https://capsule-render.vercel.app/api?type=rect&color=C3A3D6&height=3" width="100%" alt="">
 
-## 🚦 Status do projeto
+## ✅ Funcionalidades
 
-**Checkpoint 1 (entregue):** estrutura do projeto, modelagem do banco de dados, ambiente administrativo
-com tema Jazzmin, comando de dados de exemplo e perfis de acesso.
+### Área do participante (usuário logado)
 
-**Próximas etapas:** área do participante (cadastro, login, lista e detalhes de eventos, inscrição e
-cancelamento), interface responsiva com tema claro e escuro e testes.
+- Cadastro, login e logout por usuário e senha
+- Lista de eventos futuros com busca por texto, filtro por categoria e paginação
+- Página de detalhes do evento, com informações do local e barra de vagas
+- Inscrição e cancelamento da inscrição
+- Página **Minhas inscrições**, com o status de cada uma
+- Interface responsiva, com tema claro e escuro (a escolha fica salva no navegador)
+- Páginas de erro 403 e 404 personalizadas
 
-### Funcionalidades
+### Administração (equipe)
 
-| ✅ Já implementado | 🔜 Planejado |
-|---|---|
-| CRUD de eventos, categorias e locais no admin | Cadastro, login e logout de participantes |
-| Gerenciamento de inscrições (cancelamento em lote) | Lista de eventos com busca, filtro e paginação |
-| Inscrições dentro da página do evento | Página de detalhes do evento |
-| Filtros por período, categoria, local e data | Inscrição e cancelamento pelo participante |
-| Busca e navegação por data | Página "Minhas inscrições" |
-| Tema Jazzmin personalizado | Interface responsiva com tema claro e escuro |
-| Perfis de acesso (administrador, gestor e usuário) | Testes automatizados |
-| Upload de imagem de capa do evento | |
-| Dados de exemplo com um comando | |
+- CRUD de eventos, categorias e locais, com upload de imagem de capa
+- Gerenciamento de inscrições (cancelamento em lote) e inscrições dentro da página do evento
+- Gerenciamento de usuários, grupos e permissões
+- Ambiente administrativo com tema **Jazzmin**, com filtros por período, categoria, local e data, buscas e
+  navegação por data
+- **Painel com gráficos** (Chart.js): total de eventos, próximos eventos, inscrições confirmadas,
+  participantes, eventos por categoria e eventos mais procurados
+- Comando que popula o banco com dados de exemplo
 
 ### Regras de negócio
 
 > [!IMPORTANT]
-> **Já aplicadas no sistema:**
 > - O limite de vagas de um evento **não pode ultrapassar a capacidade do local**.
 > - Cada usuário só pode ter **uma inscrição por evento**.
 > - Locais e categorias com eventos **não podem ser excluídos**.
->
-> **Planejadas para a área do participante:**
 > - Não é possível se inscrever em eventos **encerrados** ou **esgotados**.
-> - Cada usuário só acessa **as próprias inscrições**.
+> - Cada usuário só acessa e cancela **as próprias inscrições**.
+> - Inscrever e cancelar só funcionam por formulário (método POST) e com o usuário logado.
+> - O painel e o admin são restritos à equipe; participantes recebem erro 403.
 
 ### Perfis de acesso
 
 | Perfil | Acesso |
 |---|---|
-| **Administrador** | Tudo: eventos, categorias, locais, inscrições, usuários e grupos |
-| **Gestor de eventos** | Cria e edita eventos, categorias e locais, e apenas visualiza inscrições |
-| **Usuário comum** | Não acessa o admin; usará a área do participante |
+| **Administrador** | Tudo: eventos, categorias, locais, inscrições, usuários, grupos e painel com gráficos |
+| **Gestor de eventos** | Cria e edita eventos, categorias e locais, apenas visualiza inscrições e acessa o painel |
+| **Usuário comum** | Área do participante: lista e detalhes de eventos, inscrição, cancelamento e "Minhas inscrições". Não acessa o admin nem o painel |
 
 <img src="https://capsule-render.vercel.app/api?type=rect&color=C3A3D6&height=3" width="100%" alt="">
 
@@ -187,9 +187,11 @@ erDiagram
 
 ## 🧰 Tecnologias
 
-* **3.12+** e **Django 6.1**
-* **SQLite** (banco de dados de desenvolvimento)
+* **Python 3.12+** e **Django 6.1**
+* **SQLite** (banco de dados relacional)
+* **Bootstrap 5.3** e **Bootstrap Icons** (interface responsiva, com tema claro e escuro)
 * **django-jazzmin** (tema do ambiente administrativo)
+* **Chart.js** (gráficos do painel)
 * **Pillow** (upload de imagens) e **WhiteNoise** (arquivos estáticos)
 * **Git** e **GitHub** (versionamento com branches e Pull Requests)
 
@@ -197,12 +199,12 @@ erDiagram
 
 ## 🚀 Instalação
 
-Pré-requisitos: Python 3.12 ou superior e Git.
+Pré-requisitos: Python 3.12 ou superior e Git. No Linux e no macOS, use `python3` no lugar de `python`.
 
 ```bash
 git clone https://github.com/LeticiaGNM/plataforma-gestao-eventos.git
 cd plataforma-gestao-eventos
-python3 -m venv venv
+python -m venv venv
 ```
 
 Ative o ambiente virtual:
@@ -214,18 +216,22 @@ Ative o ambiente virtual:
 Instale as dependências, crie o banco e popule com dados de exemplo:
 
 ```bash
-python3 -m pip install -r requirements.txt
-python3 manage.py migrate
-python3 manage.py popular_dados
+python -m pip install -r requirements.txt
+python manage.py migrate
+python manage.py popular_dados
 ```
 
 ## ▶️ Execução
 
 ```bash
-python3 manage.py runserver
+python manage.py runserver
 ```
 
-O ambiente administrativo fica em [http://127.0.0.1:8000/admin/](http://127.0.0.1:8000/admin/).
+Acesse o site em [http://127.0.0.1:8000/](http://127.0.0.1:8000/). O ambiente administrativo fica em
+[http://127.0.0.1:8000/admin/](http://127.0.0.1:8000/admin/) e o painel com gráficos em
+[http://127.0.0.1:8000/painel/](http://127.0.0.1:8000/painel/) (apenas para a equipe).
+
+> O site usa Bootstrap, Bootstrap Icons e Chart.js por CDN, então é preciso ter conexão com a internet.
 
 **Usuários de exemplo (apenas desenvolvimento):**
 
@@ -235,6 +241,15 @@ O ambiente administrativo fica em [http://127.0.0.1:8000/admin/](http://127.0.0.
 | `gestor` | `senha12345` | Gestor de eventos |
 | `maria`, `joao`, `ana` | `senha12345` | Usuários comuns (sem acesso ao admin) |
 
+## 🧪 Testes
+
+O projeto tem testes automatizados para as regras de negócio, o controle de acesso, a lista de eventos,
+as inscrições, o painel, o cadastro e o login/logout. Para executá-los:
+
+```bash
+python manage.py test
+```
+
 <img src="https://capsule-render.vercel.app/api?type=rect&color=C3A3D6&height=3" width="100%" alt="">
 
 ## 📁 Estrutura do projeto
@@ -242,14 +257,25 @@ O ambiente administrativo fica em [http://127.0.0.1:8000/admin/](http://127.0.0.
 ```text
 plataforma-gestao-eventos/
 ├── gestao_eventos/        # configurações do projeto (settings, urls)
-├── usuarios/              # app de usuários (autenticação nas próximas etapas)
+├── usuarios/              # app de usuários: cadastro, login e logout
+│   ├── forms.py           # formulários de cadastro e login
+│   ├── views.py
+│   ├── urls.py
+│   └── templates/usuarios/
 ├── eventos/               # app: categorias, locais, eventos e inscrições
 │   ├── models.py          # modelos e regras de negócio
 │   ├── admin.py           # configuração do ambiente administrativo
+│   ├── views.py           # lista, detalhes, inscrição, cancelamento e painel
+│   ├── urls.py
+│   ├── tests.py           # testes automatizados
+│   ├── templates/eventos/ # páginas da área do participante e do painel
 │   └── management/
 │       └── commands/
 │           └── popular_dados.py   # comando de dados de exemplo
+├── templates/             # templates compartilhados (base, navbar, páginas de erro)
+├── static/                # CSS e JavaScript (estilo e alternância de tema)
 ├── docs/img/              # logo e imagens do README
+├── LICENSE
 ├── requirements.txt
 └── manage.py
 ```

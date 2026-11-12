@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/6.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.1/ref/settings/
 """
+from django.contrib.messages import constants as message_constants
 
 import os
 from pathlib import Path
@@ -157,4 +158,21 @@ JAZZMIN_SETTINGS = {
 JAZZMIN_UI_TWEAKS = {
     'theme': 'flatly',
     'default_theme_mode': 'auto',
+}
+
+
+# ----------------------------------------------------------------------
+# Autenticação e mensagens
+# ----------------------------------------------------------------------
+LOGIN_URL = 'login'            # para onde vai quem tenta acessar algo sem estar logado
+LOGIN_REDIRECT_URL = 'home'    # para onde vai depois de entrar
+LOGOUT_REDIRECT_URL = 'home'   # para onde vai depois de sair
+
+# Faz as mensagens do Django usarem as cores do Bootstrap (error -> danger).
+MESSAGE_TAGS = {
+    message_constants.DEBUG: 'secondary',
+    message_constants.INFO: 'info',
+    message_constants.SUCCESS: 'success',
+    message_constants.WARNING: 'warning',
+    message_constants.ERROR: 'danger',
 }

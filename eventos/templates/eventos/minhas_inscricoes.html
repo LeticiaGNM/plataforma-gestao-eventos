@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Minhas inscrições · Gestão de Eventos{% endblock %}
+
+{% block conteudo %}
+<h1 class="h3 mb-4"><i class="bi bi-ticket-perforated"></i> Minhas inscrições</h1>
+
+{% if inscricoes %}
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead>
+                <tr>
+                    <th>Evento</th>
+                    <th>Data</th>
+                    <th>Local</th>
+                    <th>Status</th>
+                    <th>Inscrito em</th>
+                    <th class="text-end">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for inscricao in inscricoes %}
+                    <tr>
+                        <td><a href="{% url 'detalhe_evento' inscricao.evento.pk %}">{{ inscricao.evento.titulo }}</a></td>
+                        <td>{{ inscricao.evento.data|date:"d/m/Y" }} {{ inscricao.evento.horario|time:"H:i" }}</td>
+                        <td>{{ inscricao.evento.local.nome }}</td>
+                        <td>
+                            {% if inscricao.confirmada %}
+                                <span class="badge text-bg-success">Confirmada</span>
+                            {% else %}
+                                <span class="badge text-bg-secondary">Cancelada</span>
+                            {% endif %}
+                            {% if inscricao.evento.encerrado %}
+                                <span class="badge text-bg-dark">Encerrado</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ inscricao.data_inscricao|date:"d/m/Y H:i" }}</td>
+                        <td class="text-end">
+                            {% if inscricao.pode_cancelar %}
+                                <form method="post" action="{% url 'cancelar_inscricao' inscricao.evento.pk %}"
+                                      class="d-inline"
+                                      onsubmit="return confirm('Deseja realmente cancelar a sua inscrição?');">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="origem" value="minhas">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">Cancelar</button>
+                                </form>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% else %}
+    <div class="alert alert-info">
+        Você ainda não se inscreveu em nenhum evento.
+        <a href="{% url 'lista_eventos' %}" class="alert-link">Ver eventos disponíveis</a>.
+    </div>
+{% endif %}
+{% endblock %}

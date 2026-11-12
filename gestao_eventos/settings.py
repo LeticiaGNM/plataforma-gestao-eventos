@@ -165,7 +165,7 @@ JAZZMIN_UI_TWEAKS = {
 # Autenticação e mensagens
 # ----------------------------------------------------------------------
 LOGIN_URL = 'login'            # para onde vai quem tenta acessar algo sem estar logado
-LOGIN_REDIRECT_URL = 'home'    # para onde vai depois de entrar
+LOGIN_REDIRECT_URL = 'lista_eventos'   # alterado: antes era 'home'
 LOGOUT_REDIRECT_URL = 'home'   # para onde vai depois de sair
 
 # Faz as mensagens do Django usarem as cores do Bootstrap (error -> danger).

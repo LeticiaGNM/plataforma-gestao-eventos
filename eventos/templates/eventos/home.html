@@ -7,7 +7,7 @@
     <h1 class="display-5 fw-bold">Descubra e participe dos melhores eventos</h1>
     <p class="lead mb-4">Palestras, workshops, shows e muito mais. Inscreva-se em poucos cliques.</p>
     {% if user.is_authenticated %}
-        <p class="mb-0">Olá, {{ user.first_name|default:user.username }}! Em breve você verá os eventos por aqui.</p>
+        <a class="btn btn-light btn-lg" href="{% url 'lista_eventos' %}">Ver eventos</a>
     {% else %}
         <a class="btn btn-light btn-lg me-2" href="{% url 'cadastro' %}">Criar conta</a>
         <a class="btn btn-outline-light btn-lg" href="{% url 'login' %}">Entrar</a>

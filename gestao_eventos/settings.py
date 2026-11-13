@@ -151,10 +151,10 @@ JAZZMIN_SETTINGS = {
         'eventos.inscricao': 'fas fa-ticket-alt',
     },
     'changeform_format': 'horizontal_tabs',
-    'show_theme_chooser': True,
+    'show_theme_chooser': True, # pra mostrar o seletor de temas do Bootswatch
 }
 
 JAZZMIN_UI_TWEAKS = {
     'theme': 'flatly',
-    'default_theme_mode': 'auto',
+    'default_theme_mode': 'auto', # pra seguir o tema claro/escuro do meu pc
 }

@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Painel · Gestão de Eventos{% endblock %}
+
+{% block conteudo %}
+<h1 class="h3 mb-4"><i class="bi bi-bar-chart-line"></i> Painel de gestão</h1>
+
+<div class="row g-3 mb-4">
+    <div class="col-6 col-lg-3">
+        <div class="card text-center shadow-sm"><div class="card-body">
+            <div class="fs-2 fw-bold">{{ total_eventos }}</div>
+            <div class="text-body-secondary">Eventos cadastrados</div>
+        </div></div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="card text-center shadow-sm"><div class="card-body">
+            <div class="fs-2 fw-bold">{{ proximos_eventos }}</div>
+            <div class="text-body-secondary">Próximos eventos</div>
+        </div></div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="card text-center shadow-sm"><div class="card-body">
+            <div class="fs-2 fw-bold">{{ total_inscricoes }}</div>
+            <div class="text-body-secondary">Inscrições confirmadas</div>
+        </div></div>
+    </div>
+    <div class="col-6 col-lg-3">
+        <div class="card text-center shadow-sm"><div class="card-body">
+            <div class="fs-2 fw-bold">{{ total_participantes }}</div>
+            <div class="text-body-secondary">Participantes</div>
+        </div></div>
+    </div>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-6">
+        <div class="card shadow-sm"><div class="card-body">
+            <h2 class="h5">Eventos por categoria</h2>
+            <canvas id="graficoCategorias"></canvas>
+        </div></div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card shadow-sm"><div class="card-body">
+            <h2 class="h5">Eventos mais procurados</h2>
+            <canvas id="graficoEventos"></canvas>
+        </div></div>
+    </div>
+</div>
+
+<p class="mt-4">
+    <a href="{% url 'admin:index' %}" class="btn btn-outline-primary">Ir para a administração</a>
+</p>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{{ grafico_categorias|json_script:"dados-categorias" }}
+{{ grafico_eventos|json_script:"dados-eventos" }}
+<script>
+    const dadosCategorias = JSON.parse(document.getElementById('dados-categorias').textContent);
+    const dadosEventos = JSON.parse(document.getElementById('dados-eventos').textContent);
+    let graficos = [];
+
+    function corCss(nome) {
+        return getComputedStyle(document.documentElement).getPropertyValue(nome).trim();
+    }
+
+    function criarGraficos() {
+        graficos.forEach(function (g) { g.destroy(); });
+        // Usa as cores do tema atual (claro ou escuro).
+        Chart.defaults.color = corCss('--bs-body-color');
+        Chart.defaults.borderColor = corCss('--bs-border-color');
+
+        graficos = [
+            new Chart(document.getElementById('graficoCategorias'), {
+                type: 'bar',
+                data: {
+                    labels: dadosCategorias.labels,
+                    datasets: [{ label: 'Eventos', data: dadosCategorias.valores, backgroundColor: '#0d6efd' }]
+                },
+                options: {
+                    plugins: { legend: { display: false } },
+                    scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
+                }
+            }),
+            new Chart(document.getElementById('graficoEventos'), {
+                type: 'bar',
+                data: {
+                    labels: dadosEventos.labels,
+                    datasets: [{ label: 'Inscrições confirmadas', data: dadosEventos.valores, backgroundColor: '#198754' }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    plugins: { legend: { display: false } },
+                    scales: { x: { beginAtZero: true, ticks: { precision: 0 } } }
+                }
+            })
+        ];
+    }
+
+    criarGraficos();
+    // O botão de tema dispara este evento: redesenhamos com as cores novas.
+    window.addEventListener('tema-alterado', criarGraficos);
+</script>
+{% endblock %}

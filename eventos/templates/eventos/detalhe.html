@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block titulo %}{{ evento.titulo }} · Gestão de Eventos{% endblock %}
+
+{% block conteudo %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'lista_eventos' %}">Eventos</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ evento.titulo }}</li>
+    </ol>
+</nav>
+
+<div class="row g-4">
+    <div class="col-lg-8">
+        {% if evento.imagem %}
+            <img src="{{ evento.imagem.url }}" class="img-fluid rounded w-100 mb-3" alt="Capa do evento {{ evento.titulo }}">
+        {% endif %}
+        <span class="badge text-bg-primary mb-2">{{ evento.categoria.nome }}</span>
+        <h1 class="h2">{{ evento.titulo }}</h1>
+        <div class="mt-3">{{ evento.descricao|linebreaks }}</div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <ul class="list-unstyled mb-4">
+                    <li class="mb-2"><i class="bi bi-calendar3"></i> <strong>Data:</strong> {{ evento.data|date:"d/m/Y" }}</li>
+                    <li class="mb-2"><i class="bi bi-clock"></i> <strong>Horário:</strong> {{ evento.horario|time:"H:i" }}</li>
+                    <li class="mb-2">
+                        <i class="bi bi-geo-alt"></i> <strong>Local:</strong> {{ evento.local.nome }}<br>
+                        <span class="small text-body-secondary">{{ evento.local.endereco }}</span>
+                    </li>
+                    <li class="mb-2">
+                        <i class="bi bi-person-badge"></i> <strong>Organizador:</strong>
+                        {{ evento.organizador.get_full_name|default:evento.organizador.username }}
+                    </li>
+                </ul>
+
+                {% with ocupadas=evento.vagas_ocupadas limite=evento.limite_vagas %}
+                    <p class="mb-1"><strong>Vagas:</strong> {{ ocupadas }} de {{ limite }} preenchidas</p>
+                    <div class="progress mb-4" role="progressbar" aria-label="Ocupação do evento">
+                        <div class="progress-bar" style="width: {% widthratio ocupadas limite 100 %}%"></div>
+                    </div>
+                {% endwith %}
+
+                {% if evento.encerrado %}
+                    <div class="alert alert-secondary mb-0">Este evento já foi encerrado.</div>
+                {% elif inscrito %}
+                    <div class="alert alert-success">Você está inscrito(a) neste evento.</div>
+                    <form method="post" action="{% url 'cancelar_inscricao' evento.pk %}"
+                          onsubmit="return confirm('Deseja realmente cancelar a sua inscrição?');">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-danger w-100">Cancelar inscrição</button>
+                    </form>
+                {% elif evento.esgotado %}
+                    <button type="button" class="btn btn-secondary w-100" disabled>Vagas esgotadas</button>
+                {% else %}
+                    <form method="post" action="{% url 'inscrever' evento.pk %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-primary btn-lg w-100">
+                            <i class="bi bi-ticket-perforated"></i> Inscrever-se
+                        </button>
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

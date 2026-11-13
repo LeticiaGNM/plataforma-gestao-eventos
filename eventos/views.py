@@ -1,8 +1,10 @@
 from django.contrib import messages
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator
 from django.db import transaction
-from django.db.models import Q
+from django.db.models import Count, Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.views.decorators.http import require_POST
@@ -130,3 +132,35 @@ def minhas_inscricoes(request):
         .select_related('evento', 'evento__local', 'evento__categoria')
     )
     return render(request, 'eventos/minhas_inscricoes.html', {'inscricoes': inscricoes})
+
+@login_required
+def painel(request):
+    # Somente a equipe (is_staff) acessa o painel; os demais recebem erro 403.
+    if not request.user.is_staff:
+        raise PermissionDenied
+
+    hoje = timezone.localdate()
+    confirmada = Inscricao.Status.CONFIRMADA
+
+    eventos_por_categoria = Categoria.objects.annotate(total=Count('eventos')).order_by('nome')
+    mais_procurados = (
+        Evento.objects
+        .annotate(total=Count('inscricoes', filter=Q(inscricoes__status=confirmada)))
+        .order_by('-total', 'titulo')[:5]
+    )
+
+    contexto = {
+        'total_eventos': Evento.objects.count(),
+        'proximos_eventos': Evento.objects.filter(data__gte=hoje).count(),
+        'total_inscricoes': Inscricao.objects.filter(status=confirmada).count(),
+        'total_participantes': get_user_model().objects.filter(is_staff=False).count(),
+        'grafico_categorias': {
+            'labels': [c.nome for c in eventos_por_categoria],
+            'valores': [c.total for c in eventos_por_categoria],
+        },
+        'grafico_eventos': {
+            'labels': [e.titulo for e in mais_procurados],
+            'valores': [e.total for e in mais_procurados],
+        },
+    }
+    return render(request, 'eventos/painel.html', contexto)

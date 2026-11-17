@@ -176,3 +176,20 @@ MESSAGE_TAGS = {
     message_constants.WARNING: 'warning',
     message_constants.ERROR: 'danger',
 }
+
+
+# ----------------------------------------------------------------------
+# Autenticação e mensagens
+# ----------------------------------------------------------------------
+LOGIN_URL = 'login'            # para onde vai quem tenta acessar algo sem estar logado
+LOGIN_REDIRECT_URL = 'lista_eventos'   # alterado: antes era 'home'
+LOGOUT_REDIRECT_URL = 'home'   # para onde vai depois de sair
+
+# Faz as mensagens do Django usarem as cores do Bootstrap (error -> danger).
+MESSAGE_TAGS = {
+    message_constants.DEBUG: 'secondary',
+    message_constants.INFO: 'info',
+    message_constants.SUCCESS: 'success',
+    message_constants.WARNING: 'warning',
+    message_constants.ERROR: 'danger',
+}

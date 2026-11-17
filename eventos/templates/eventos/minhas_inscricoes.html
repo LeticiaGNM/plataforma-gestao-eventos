@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block titulo %}Minhas inscrições · Gestão de Eventos{% endblock %}
+{% block titulo %}Minhas inscrições · Lumipass{% endblock %}
 
 {% block conteudo %}
 <h1 class="h3 mb-4"><i class="bi bi-ticket-perforated"></i> Minhas inscrições</h1>
@@ -21,7 +21,13 @@
             <tbody>
                 {% for inscricao in inscricoes %}
                     <tr>
-                        <td><a href="{% url 'detalhe_evento' inscricao.evento.pk %}">{{ inscricao.evento.titulo }}</a></td>
+                        <td>
+                            <a href="{% url 'detalhe_evento' inscricao.evento.pk %}"
+                            class="d-flex align-items-center gap-3 text-decoration-none">
+                                <img src="{{ inscricao.evento.imagem_capa_url }}" alt="" class="mini-capa">
+                                <span class="fw-bold">{{ inscricao.evento.titulo }}</span>
+                            </a>
+                        </td>
                         <td>{{ inscricao.evento.data|date:"d/m/Y" }} {{ inscricao.evento.horario|time:"H:i" }}</td>
                         <td>{{ inscricao.evento.local.nome }}</td>
                         <td>

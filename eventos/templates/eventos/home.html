@@ -1,34 +1,83 @@
 {% extends 'base.html' %}
 
-{% block titulo %}Início · Gestão de Eventos{% endblock %}
+{% block titulo %}Lumipass · Descubra e participe de eventos{% endblock %}
 
 {% block conteudo %}
-<section class="hero text-center mb-5">
-    <h1 class="display-5 fw-bold">Descubra e participe dos melhores eventos</h1>
-    <p class="lead mb-4">Palestras, workshops, shows e muito mais. Inscreva-se em poucos cliques.</p>
-    {% if user.is_authenticated %}
-        <a class="btn btn-light btn-lg" href="{% url 'lista_eventos' %}">Ver eventos</a>
-    {% else %}
-        <a class="btn btn-light btn-lg me-2" href="{% url 'cadastro' %}">Criar conta</a>
-        <a class="btn btn-outline-light btn-lg" href="{% url 'login' %}">Entrar</a>
-    {% endif %}
+<section class="hero-lume mb-5">
+    <div class="row align-items-center g-5">
+        <div class="{% if destaque %}col-lg-6{% else %}col-lg-9{% endif %}">
+            <h1 class="mb-3">Seu próximo evento começa aqui</h1>
+            <p class="lead mb-4">
+                Encontre palestras, oficinas e encontros, garanta sua vaga em poucos cliques
+                e acompanhe tudo em um só lugar.
+            </p>
+            <div class="d-flex flex-wrap gap-2">
+                {% if user.is_authenticated %}
+                    <a class="btn btn-ouro btn-lg" href="{% url 'lista_eventos' %}">Ver eventos</a>
+                    <a class="btn btn-outline-claro btn-lg" href="{% url 'minhas_inscricoes' %}">Minhas inscrições</a>
+                {% else %}
+                    <a class="btn btn-ouro btn-lg" href="{% url 'cadastro' %}">Criar conta</a>
+                    <a class="btn btn-outline-claro btn-lg" href="{% url 'login' %}">Entrar</a>
+                {% endif %}
+            </div>
+        </div>
+
+        {% if destaque %}
+            <div class="col-lg-6">
+                <a class="destaque" href="{% url 'detalhe_evento' destaque.pk %}">
+                    <img src="{{ destaque.imagem_capa_url }}" alt="Capa do evento {{ destaque.titulo }}">
+                    <span class="destaque-rotulo">Próximo evento</span>
+                    <div class="destaque-corpo">
+                        <span class="selo-categoria">{{ destaque.categoria.nome }}</span>
+                        <h2 class="titulo-card mt-2 mb-2">{{ destaque.titulo }}</h2>
+                        <ul class="card-evento-meta mb-0">
+                            <li><i class="bi bi-clock"></i> {{ destaque.data|date:"d/m/Y" }} às {{ destaque.horario|time:"H:i" }}</li>
+                            <li><i class="bi bi-geo-alt"></i> {{ destaque.local.nome }}</li>
+                        </ul>
+                    </div>
+                </a>
+            </div>
+        {% endif %}
+    </div>
 </section>
 
-<section class="row g-4 text-center">
-    <div class="col-md-4">
-        <div class="fs-1 text-primary"><i class="bi bi-search"></i></div>
-        <h2 class="h5">Encontre</h2>
-        <p class="text-body-secondary">Pesquise eventos e filtre por categoria.</p>
+<section class="row g-4 mb-5">
+    <div class="col-md-4 d-flex gap-3">
+        <div class="passo-icone"><i class="bi bi-search"></i></div>
+        <div>
+            <h2 class="h5 mb-1">Encontre</h2>
+            <p class="text-body-secondary mb-0">Pesquise eventos e filtre por categoria.</p>
+        </div>
     </div>
-    <div class="col-md-4">
-        <div class="fs-1 text-primary"><i class="bi bi-ticket-perforated"></i></div>
-        <h2 class="h5">Inscreva-se</h2>
-        <p class="text-body-secondary">Garanta sua vaga e cancele quando precisar.</p>
+    <div class="col-md-4 d-flex gap-3">
+        <div class="passo-icone"><i class="bi bi-ticket-perforated"></i></div>
+        <div>
+            <h2 class="h5 mb-1">Inscreva-se</h2>
+            <p class="text-body-secondary mb-0">Garanta sua vaga e cancele quando precisar.</p>
+        </div>
     </div>
-    <div class="col-md-4">
-        <div class="fs-1 text-primary"><i class="bi bi-calendar-check"></i></div>
-        <h2 class="h5">Acompanhe</h2>
-        <p class="text-body-secondary">Veja todas as suas inscrições em um só lugar.</p>
+    <div class="col-md-4 d-flex gap-3">
+        <div class="passo-icone"><i class="bi bi-calendar-check"></i></div>
+        <div>
+            <h2 class="h5 mb-1">Acompanhe</h2>
+            <p class="text-body-secondary mb-0">Veja todas as suas inscrições em um só lugar.</p>
+        </div>
     </div>
 </section>
+
+{% if outros %}
+    <section>
+        <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+            <h2 class="h3 mb-0">Também vem aí</h2>
+            <a href="{% url 'lista_eventos' %}" class="btn btn-outline-primary btn-sm">Ver todos os eventos</a>
+        </div>
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            {% for evento in outros %}
+                <div class="col">
+                    {% include 'eventos/_card_evento.html' %}
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+{% endif %}
 {% endblock %}

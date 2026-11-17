@@ -1,32 +1,38 @@
 {% extends 'base.html' %}
 
-{% block titulo %}Eventos · Gestão de Eventos{% endblock %}
+{% block titulo %}Eventos · Lumipass{% endblock %}
 
 {% block conteudo %}
-<div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
-    <h1 class="h3 mb-0"><i class="bi bi-calendar-event"></i> Próximos eventos</h1>
-    <span class="text-body-secondary">{{ paginator.count }} evento(s) encontrado(s)</span>
-</div>
+<section class="cabecalho-pagina mb-4">
+    <div class="d-flex flex-wrap justify-content-between align-items-end gap-2 mb-3">
+        <div>
+            <h1 class="h2 mb-1">Próximos eventos</h1>
+            <p class="text-body-secondary mb-0">Escolha um evento, veja os detalhes e garanta sua vaga.</p>
+        </div>
+        <span class="text-body-secondary">{{ paginator.count }} evento(s) encontrado(s)</span>
+    </div>
 
-<form method="get" class="row g-2 mb-4">
-    <div class="col-md-6">
-        <input type="search" name="q" value="{{ q }}" class="form-control"
-               placeholder="Buscar por título, descrição ou local">
+    <form method="get" class="mb-3">
+        {% if categoria_selecionada %}
+            <input type="hidden" name="categoria" value="{{ categoria_selecionada }}">
+        {% endif %}
+        <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-search"></i></span>
+            <input type="search" name="q" value="{{ q }}" class="form-control"
+                   placeholder="Buscar por título, descrição ou local" aria-label="Buscar eventos">
+            <button type="submit" class="btn btn-primary">Buscar</button>
+        </div>
+    </form>
+
+    <div class="d-flex flex-wrap gap-2">
+        <a class="chip {% if not categoria_selecionada %}ativo{% endif %}"
+           href="?{% if q %}q={{ q|urlencode }}{% endif %}">Todas</a>
+        {% for categoria in categorias %}
+            <a class="chip {% if categoria.pk == categoria_selecionada %}ativo{% endif %}"
+               href="?categoria={{ categoria.pk }}{% if q %}&amp;q={{ q|urlencode }}{% endif %}">{{ categoria.nome }}</a>
+        {% endfor %}
     </div>
-    <div class="col-md-4">
-        <select name="categoria" class="form-select">
-            <option value="">Todas as categorias</option>
-            {% for categoria in categorias %}
-            <option value="{{ categoria.pk }}" {% if categoria.pk == categoria_selecionada %}selected{% endif %}>
-                    {{ categoria.nome }}
-                </option>
-            {% endfor %}
-        </select>
-    </div>
-    <div class="col-md-2 d-grid">
-        <button type="submit" class="btn btn-primary"><i class="bi bi-search"></i> Filtrar</button>
-    </div>
-</form>
+</section>
 
 {% if page_obj %}
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
@@ -38,7 +44,7 @@
     </div>
 
     {% if page_obj.has_other_pages %}
-        <nav class="mt-4" aria-label="Paginação">
+        <nav class="mt-5" aria-label="Paginação">
             <ul class="pagination justify-content-center">
                 {% if page_obj.has_previous %}
                     <li class="page-item">
@@ -63,8 +69,11 @@
         </nav>
     {% endif %}
 {% else %}
-    <div class="alert alert-info">
-        Nenhum evento encontrado. Tente outro termo de busca ou outra categoria.
+    <div class="vazio">
+        <i class="bi bi-calendar-x"></i>
+        <h2 class="h4 mt-2">Nenhum evento encontrado</h2>
+        <p class="text-body-secondary mb-3">Tente outro termo de busca ou escolha outra categoria.</p>
+        <a href="{% url 'lista_eventos' %}" class="btn btn-outline-primary">Limpar filtros</a>
     </div>
 {% endif %}
 {% endblock %}

@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block titulo %}Painel · Gestão de Eventos{% endblock %}
+{% block titulo %}Painel · Lumipass{% endblock %}
 
 {% block conteudo %}
 <h1 class="h3 mb-4"><i class="bi bi-bar-chart-line"></i> Painel de gestão</h1>
@@ -76,7 +76,7 @@
                 type: 'bar',
                 data: {
                     labels: dadosCategorias.labels,
-                    datasets: [{ label: 'Eventos', data: dadosCategorias.valores, backgroundColor: '#0d6efd' }]
+                    datasets: [{ label: 'Eventos', data: dadosCategorias.valores, backgroundColor: '#8E5BA5' }]
                 },
                 options: {
                     plugins: { legend: { display: false } },
@@ -87,7 +87,7 @@
                 type: 'bar',
                 data: {
                     labels: dadosEventos.labels,
-                    datasets: [{ label: 'Inscrições confirmadas', data: dadosEventos.valores, backgroundColor: '#198754' }]
+                    datasets: [{ label: 'Inscrições confirmadas', data: dadosEventos.valores, backgroundColor: '#F2A93B' }]
                 },
                 options: {
                     indexAxis: 'y',

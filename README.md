@@ -134,6 +134,22 @@ O **Lumipass** é uma aplicação web feita com **Django** onde:
 
 <img src="https://capsule-render.vercel.app/api?type=rect&color=C3A3D6&height=3" width="100%" alt="">
 
+## 🎨 Identidade visual
+
+A interface segue as cores e a linguagem do Lumipass, nos temas claro e escuro.
+
+| Cor | Código | Uso |
+|---|---|---|
+| Roxo | `#8E5BA5` / `#7A4A91` | cor da marca, botões e links |
+| Lilás | `#C3A3D6` | detalhes e ilustrações |
+| Dourado | `#FFC266` | destaques e selos |
+| Creme | `#FFF8EC` | fundos claros |
+| Roxo-tinta | `#3B2A4A` | textos e rodapé |
+
+- **Tipografia:** *Fraunces* nos títulos e *Nunito Sans* no texto.
+- **Imagens dos eventos:** cada evento tem uma imagem de capa. Ela pode ser enviada pelo admin, colocada em `static/img/eventos/` (com o nome do título do evento) ou, na falta dela, vem a imagem da categoria. As ilustrações de exemplo foram criadas para o projeto.
+- **Responsivo:** o layout se adapta a celular, tablet e computador.
+
 ## 🗂️ Modelagem do banco de dados
 
 ```mermaid
@@ -194,6 +210,7 @@ erDiagram
 * **Chart.js** (gráficos do painel)
 * **Pillow** (upload de imagens) e **WhiteNoise** (arquivos estáticos)
 * **Git** e **GitHub** (versionamento com branches e Pull Requests)
+* **Google Fonts** (Fraunces e Nunito Sans) e identidade visual própria do Lumipass
 
 <img src="https://capsule-render.vercel.app/api?type=rect&color=C3A3D6&height=3" width="100%" alt="">
 

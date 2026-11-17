@@ -1,11 +1,20 @@
 from datetime import datetime
 
 from django.conf import settings
+from django.contrib.staticfiles import finders
+from django.templatetags.static import static
+from django.utils.text import slugify
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.utils import timezone
 
+# Categorias que têm uma imagem pronta em static/img/categorias/<slug>.svg
+CAPAS_DE_CATEGORIA = {
+    'tecnologia', 'musica', 'esportes', 'educacao', 'negocios', 'arte-e-cultura',
+}
+# Formatos aceitos para a imagem própria de um evento, em ordem de preferência.
+EXTENSOES_DE_CAPA = ('jpg', 'jpeg', 'png', 'webp', 'svg')
 
 class Categoria(models.Model):
     # Tipo do evento (ex.: Tecnologia, Música, Esportes).
@@ -98,6 +107,26 @@ class Evento(models.Model):
     def esgotado(self):
         return self.vagas_disponiveis == 0
 
+    @property
+    def imagem_capa_url(self):
+        """Endereço da imagem que representa o evento (nunca fica sem imagem)."""
+        # 1) Imagem enviada pelo admin, se o arquivo existir de verdade.
+        if self.imagem and self.imagem.storage.exists(self.imagem.name):
+            return self.imagem.url
+
+        # 2) Imagem própria em static/img/eventos/, com o nome do título.
+        #    Ex.: "Semana de Tecnologia" -> img/eventos/semana-de-tecnologia.svg
+        slug = slugify(self.titulo)
+        for extensao in EXTENSOES_DE_CAPA:
+            caminho = f'img/eventos/{slug}.{extensao}'
+            if finders.find(caminho):
+                return static(caminho)
+
+        # 3) Imagem da categoria; 4) imagem padrão.
+        slug_categoria = slugify(self.categoria.nome)
+        if slug_categoria not in CAPAS_DE_CATEGORIA:
+            slug_categoria = 'padrao'
+        return static(f'img/categorias/{slug_categoria}.svg')
 
 class Inscricao(models.Model):
     class Status(models.TextChoices):

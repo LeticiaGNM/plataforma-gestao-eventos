@@ -13,7 +13,17 @@ from .models import Categoria, Evento, Inscricao
 
 
 def home(request):
-    return render(request, 'eventos/home.html')
+    # Os próximos eventos alimentam o destaque e a vitrine da página inicial.
+    proximos = list(
+        Evento.objects
+        .select_related('local', 'categoria')
+        .filter(data__gte=timezone.localdate())[:4]
+    )
+    contexto = {
+        'destaque': proximos[0] if proximos else None,
+        'outros': proximos[1:],
+    }
+    return render(request, 'eventos/home.html', contexto)
 
 
 @login_required

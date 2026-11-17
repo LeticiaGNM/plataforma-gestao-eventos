@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+
+{% block titulo %}Eventos · Lumipass{% endblock %}
+
+{% block conteudo %}
+<section class="cabecalho-pagina mb-4">
+    <div class="d-flex flex-wrap justify-content-between align-items-end gap-2 mb-3">
+        <div>
+            <h1 class="h2 mb-1">Próximos eventos</h1>
+            <p class="text-body-secondary mb-0">Escolha um evento, veja os detalhes e garanta sua vaga.</p>
+        </div>
+        <span class="text-body-secondary">{{ paginator.count }} evento(s) encontrado(s)</span>
+    </div>
+
+    <form method="get" class="mb-3">
+        {% if categoria_selecionada %}
+            <input type="hidden" name="categoria" value="{{ categoria_selecionada }}">
+        {% endif %}
+        <div class="input-group">
+            <span class="input-group-text"><i class="bi bi-search"></i></span>
+            <input type="search" name="q" value="{{ q }}" class="form-control"
+                   placeholder="Buscar por título, descrição ou local" aria-label="Buscar eventos">
+            <button type="submit" class="btn btn-primary">Buscar</button>
+        </div>
+    </form>
+
+    <div class="d-flex flex-wrap gap-2">
+        <a class="chip {% if not categoria_selecionada %}ativo{% endif %}"
+           href="?{% if q %}q={{ q|urlencode }}{% endif %}">Todas</a>
+        {% for categoria in categorias %}
+            <a class="chip {% if categoria.pk == categoria_selecionada %}ativo{% endif %}"
+               href="?categoria={{ categoria.pk }}{% if q %}&amp;q={{ q|urlencode }}{% endif %}">{{ categoria.nome }}</a>
+        {% endfor %}
+    </div>
+</section>
+
+{% if page_obj %}
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {% for evento in page_obj %}
+            <div class="col">
+                {% include 'eventos/_card_evento.html' %}
+            </div>
+        {% endfor %}
+    </div>
+
+    {% if page_obj.has_other_pages %}
+        <nav class="mt-5" aria-label="Paginação">
+            <ul class="pagination justify-content-center">
+                {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?{% if querystring %}{{ querystring }}&amp;{% endif %}page={{ page_obj.previous_page_number }}">Anterior</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled"><span class="page-link">Anterior</span></li>
+                {% endif %}
+
+                <li class="page-item active">
+                    <span class="page-link">{{ page_obj.number }} de {{ paginator.num_pages }}</span>
+                </li>
+
+                {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?{% if querystring %}{{ querystring }}&amp;{% endif %}page={{ page_obj.next_page_number }}">Próxima</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled"><span class="page-link">Próxima</span></li>
+                {% endif %}
+            </ul>
+        </nav>
+    {% endif %}
+{% else %}
+    <div class="vazio">
+        <i class="bi bi-calendar-x"></i>
+        <h2 class="h4 mt-2">Nenhum evento encontrado</h2>
+        <p class="text-body-secondary mb-3">Tente outro termo de busca ou escolha outra categoria.</p>
+        <a href="{% url 'lista_eventos' %}" class="btn btn-outline-primary">Limpar filtros</a>
+    </div>
+{% endif %}
+{% endblock %}

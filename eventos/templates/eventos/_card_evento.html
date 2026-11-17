@@ -1,0 +1,30 @@
+{% with livres=evento.vagas_disponiveis %}
+<a href="{% url 'detalhe_evento' evento.pk %}" class="card card-evento h-100">
+    <div class="card-evento-capa">
+        <img src="{{ evento.imagem_capa_url }}" alt="Capa do evento {{ evento.titulo }}" loading="lazy">
+        <span class="selo-data">
+            <strong>{{ evento.data|date:"d" }}</strong>
+            <small>{{ evento.data|date:"M"|lower }}</small>
+        </span>
+        {% if evento.encerrado %}
+            <span class="selo-status selo-escuro">Encerrado</span>
+        {% elif livres == 0 %}
+            <span class="selo-status selo-escuro">Esgotado</span>
+        {% elif livres <= 5 %}
+            <span class="selo-status">Últimas vagas</span>
+        {% endif %}
+    </div>
+    <div class="card-evento-corpo">
+        <span class="selo-categoria">{{ evento.categoria.nome }}</span>
+        <h2 class="titulo-card mb-1">{{ evento.titulo }}</h2>
+        <ul class="card-evento-meta">
+            <li><i class="bi bi-clock"></i> {{ evento.data|date:"d/m/Y" }} às {{ evento.horario|time:"H:i" }}</li>
+            <li><i class="bi bi-geo-alt"></i> {{ evento.local.nome }}</li>
+        </ul>
+        <div class="card-evento-rodape">
+            <span class="text-body-secondary">{{ livres }} vaga{{ livres|pluralize }}</span>
+            <span class="ver-mais">Ver detalhes</span>
+        </div>
+    </div>
+</a>
+{% endwith %}
